@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
-import openai
+from openai import OpenAI
+
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 # Set the title of the app
 st.title('Google Ads Campaign Summary')
@@ -9,7 +11,6 @@ st.title('Google Ads Campaign Summary')
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
 # Initialize OpenAI API
-openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 def analyze_data_with_chatgpt(data):
     # Convert DataFrame to a string or JSON format
@@ -22,14 +23,12 @@ def analyze_data_with_chatgpt(data):
     ]
 
     # Call OpenAI API
-    response = openai.ChatCompletion.create(
-        model="gpt-4",  # You can use "gpt-3.5-turbo" if you don't have access to GPT-4
-        messages=messages,
-        max_tokens=150
-    )
+    response = client.chat.completions.create(model="gpt-4",  # You can use "gpt-3.5-turbo" if you don't have access to GPT-4
+    messages=messages,
+    max_tokens=150)
 
     # Extract the response content
-    return response['choices'][0]['message']['content'].strip()
+    return response.choices[0].message.content.strip()
 
 if uploaded_file is not None:
     # Read the uploaded CSV file
