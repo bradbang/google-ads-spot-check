@@ -14,15 +14,14 @@ st.write("*Assets:* Generate the CSV by going to Google Ads > Assets > Download 
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
 
 # Initialize OpenAI API
-
-def analyze_data_with_chatgpt(data):
+def analyze_data_with_chatgpt(data, extra_info):
     # Convert DataFrame to a string or JSON format
     data_str = data.to_json()
 
     # Create a message list for ChatGPT
     messages = [
         {"role": "system", "content": "You are a data analyst specializing in Google Ads campaigns."},
-        {"role": "user", "content": f"Take the following Google Ads campaign export and analyse the data to identify spelling errors (we should use Australian english), incorrect data or messaging conflicts/mis-matches. Note that it is expected that the 'campaign' and 'ad group' be repeated as these indicate grouping - and this is not an error. Headlines = Title Case, Descriptions = Sentence case. If you flag a spelling mistake then realise it's not a spelling mistake don't output anything. note that headlines have a limit of 30 characters, so sometimes we use abbreviations to come in under the limit. Output issues in a table format indicate which CSV row and column name the error is on, what the issue is and what needs to be fixed:\n\n{data_str}"}
+        {"role": "user", "content": f"Take the following Google Ads campaign export and analyse the data to identify spelling errors (we should use Australian english), incorrect data or messaging conflicts/mis-matches. Note that it is expected that the 'campaign' and 'ad group' be repeated as these indicate grouping - and this is not an error. Headlines = Title Case, Descriptions = Sentence case. If you flag a spelling mistake then realise it's not a spelling mistake don't output anything. note that headlines have a limit of 30 characters, so sometimes we use abbreviations to come in under the limit. Output issues in a table format indicate which CSV row and column name the error is on, what the issue is and what needs to be fixed:\n\n{data_str}\n\nAdditional Information: {extra_info}"}
     ]
 
     # Call OpenAI API
@@ -66,10 +65,13 @@ if uploaded_file is not None:
     st.write("Here is a summary of the uploaded dataset.")
     st.write(summary_df)
 
+    # Add a text input for additional information
+    extra_info = st.text_input("Enter additional information for the analysis:")
+
     # Phase 2: Button to run analysis
     if st.button(":male-detective: Analyse this dataset"):
         with st.spinner("Analyzing the dataset..."):
             # Analyze data with ChatGPT
-            analysis = analyze_data_with_chatgpt(summary_df)
+            analysis = analyze_data_with_chatgpt(summary_df, extra_info)
             st.markdown("### :brain: Bradgic analysis")
             st.write(analysis)
