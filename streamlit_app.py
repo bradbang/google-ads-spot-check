@@ -3,6 +3,7 @@ import pandas as pd
 from openai import OpenAI
 
 client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
+st.set_page_config(layout="wide")
 
 # Set the title of the app
 st.title('Google Ads Campaign Summary + Spot Check')
@@ -21,11 +22,11 @@ def analyze_data_with_chatgpt(data):
     # Create a message list for ChatGPT
     messages = [
         {"role": "system", "content": "You are a data analyst specializing in Google Ads campaigns."},
-        {"role": "user", "content": f"Take the following Google Ads campaign export and analyse the data to identify spelling errors (we should use Australian english), incorrect data or messaging conflicts/mis-matches. Note that it is expected that the 'campaign' and 'ad group' be repeated as these indicate grouping - and this is not an error. Headlines = Title Case, Descriptions = Sentence case. If you flag a spelling mistake then realise it's not a spelling mistake don't output anything. note that headlines have a limit of 30 characters, so sometimes we use abbreviations to come in under the limit. Output issues in a table format indicate which CSV row and column name the error is on, what the issue is and what needs to be fixed:\n\n{data_str}"}
+        {"role": "user", "content": f"Take the following Google Ads campaign export and analyse the data to identify spelling errors (we should use Australian english), incorrect data or messaging conflicts/mis-matches. Note that it is expected that the 'campaign' and 'ad group' be repeated as these indicate grouping - and this is not an error. Headlines = Title Case, Descriptions = Sentence case. If you flag a spelling mistake then realise it's not a spelling mistake don't output anything. note that headlines have a limit of 30 characters, so sometimes we use abbreviations to come in under the limit. Ignore use of & instead of 'and'. Ignore 'Text not available' errors or empty cells. Output issues in a table format indicate which CSV row and column name the error is on, what the issue is and what needs to be fixed:\n\n{data_str}"}
     ]
 
     # Call OpenAI API
-    response = client.chat.completions.create(model="gpt-4o-mini",  # Use "gpt-4" if you have access
+    response = client.chat.completions.create(model="gpt-4o",  # Use "gpt-4" if you have access
     messages=messages,
     max_tokens=250)
 
