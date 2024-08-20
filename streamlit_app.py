@@ -7,7 +7,7 @@ client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 # Set the title of the app
 st.title('Google Ads Campaign Summary + Spot Check')
 st.write("Upload your Google Ads campaign data and we will analyse for issues.")
-st.write("Generate the CSV by going to Google Ads > Campaigns > Ads > Downloads > Download as CSV")
+st.write("Generate the CSV by going to Google Ads > Campaigns > Ads > *Filter by active* > Downloads > Download as CSV")
 
 # Upload the CSV file
 uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
@@ -37,9 +37,11 @@ if uploaded_file is not None:
     df = pd.read_csv(uploaded_file, header=2)
 
     # Define the required columns, excluding "Headline X position" columns
-    required_columns = [
-        'Campaign', 'Ad group', 'Final URL', 'Long headline',
-        'Headline 1', 'Headline 2', 'Headline 3', 'Headline 4', 
+    required_columns = ['Campaign', 'Ad group', 'Final URL']
+
+    # Optional columns
+    optional_columns = [
+        'Long headline','Headline 1', 'Headline 2', 'Headline 3', 'Headline 4', 
         'Headline 5', 'Headline 6', 'Headline 7', 'Headline 8', 
         'Headline 9', 'Headline 10', 'Headline 11', 'Headline 12', 
         'Headline 13', 'Headline 14', 'Headline 15', 'Description', 
@@ -53,8 +55,12 @@ if uploaded_file is not None:
         df = df.dropna(subset=['Campaign'])
         df = df[df['Campaign'] != '--']
 
-        # Extract and display the required columns
-        summary_df = df[required_columns]
+        # Include optional columns if they exist
+        available_optional_columns = [col for col in optional_columns if col in df.columns]
+        all_columns = required_columns + available_optional_columns
+
+        # Extract and display the required and available optional columns
+        summary_df = df[all_columns]
         st.write("Campaign Summary:")
         st.write(summary_df)
 
