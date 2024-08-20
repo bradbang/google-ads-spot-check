@@ -28,7 +28,7 @@ def analyze_data_with_chatgpt(data):
     # Call OpenAI API
     response = client.chat.completions.create(model="gpt-4o",  # Use "gpt-4" if you have access
     messages=messages,
-    max_tokens=250)
+    max_tokens=1000)
 
     # Extract the response content
     return response.choices[0].message.content.strip()
