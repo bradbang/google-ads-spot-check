@@ -67,7 +67,7 @@ if uploaded_file is not None:
 
         # Analyze data with ChatGPT
         analysis = analyze_data_with_chatgpt(summary_df)
-        st.write("Bradgic analysis:")
+        st.write("# Bradgic analysis:")
         st.write(analysis)
     else:
         missing_columns = set(required_columns) - set(df.columns)
