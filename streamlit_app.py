@@ -66,10 +66,10 @@ if uploaded_file is not None:
     st.write("Here is a summary of the uploaded dataset.")
     st.write(summary_df)
 
-
     # Phase 2: Button to run analysis
     if st.button(":male-detective: Analyse this dataset"):
-        # Analyze data with ChatGPT
-        analysis = analyze_data_with_chatgpt(summary_df)
-        st.markdown("### :brain: Bradgic analysis")
-        st.write(analysis)
+        with st.spinner("Analyzing the dataset..."):
+            # Analyze data with ChatGPT
+            analysis = analyze_data_with_chatgpt(summary_df)
+            st.markdown("### :brain: Bradgic analysis")
+            st.write(analysis)
