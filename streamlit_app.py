@@ -66,7 +66,7 @@ if uploaded_file is not None:
     st.write(summary_df)
 
     # Add a text input for additional information
-    extra_info = st.text_input("Enter additional information for the analysis:")
+    extra_info = st.text_input("Is there anything else you would like to add to the analysis prompt?")
 
     # Phase 2: Button to run analysis
     if st.button(":male-detective: Analyse this dataset"):
