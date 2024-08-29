@@ -4,7 +4,7 @@ import pandas as pd
 st.set_page_config(layout="wide")  # Set the page to wide mode
 
 st.title("Google Ads Data Analyzer")
-st.markdown("This sytem helps easily analyse the keywords and destination URL's for each campaign and ad-group").
+st.markdown("This sytem helps easily analyse the keywords and destination URL's for each campaign and ad-group")
 st.markdown("Upload your Google Ads and keywords data to get started.")
 
 ## File Uploads
