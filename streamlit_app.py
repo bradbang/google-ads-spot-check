@@ -4,6 +4,8 @@ import pandas as pd
 st.set_page_config(layout="wide")  # Set the page to wide mode
 
 st.title("Google Ads Data Analyzer")
+st.markdown("This sytem helps easily analyse the keywords and destination URL's for each campaign and ad-group").
+st.markdown("Upload your Google Ads and keywords data to get started.")
 
 ## File Uploads
 
@@ -12,13 +14,13 @@ st.header("Upload CSV Files")
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    ad_file = st.file_uploader("Upload Ad Export CSV", type="csv")
+    ad_file = st.file_uploader("Upload Google Ads 'ads' export CSV", type="csv")
 
 with col2:
-    keyword_file = st.file_uploader("Upload Keyword Export CSV", type="csv")
+    keyword_file = st.file_uploader("Upload Google Ads 'search keyword' export CSV", type="csv")
 
 with col3:
-    negative_keyword_file = st.file_uploader("Upload Negative Keyword Export CSV (Optional)", type="csv")
+    negative_keyword_file = st.file_uploader("Upload Google Ads negative 'search keyword' export CSV (Optional)", type="csv")
 
 if ad_file and keyword_file:
     ## Data Processing
